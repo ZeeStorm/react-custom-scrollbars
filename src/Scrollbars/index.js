@@ -491,6 +491,7 @@ export default class Scrollbars extends Component {
             onScrollStop,
             onUpdate,
             renderView,
+            renderViewContainer,
             renderTrackHorizontal,
             renderTrackVertical,
             renderThumbHorizontal,
@@ -571,9 +572,13 @@ export default class Scrollbars extends Component {
 
         return createElement(tagName, { ...props, style: containerStyle, ref: (ref) => { this.container = ref; } }, [
             cloneElement(
-                renderView({ style: viewStyle }),
-                { key: 'view', ref: (ref) => { this.view = ref; } },
-                children
+                renderViewContainer(),
+                { key: 'container' },
+                cloneElement(
+                    renderView({ style: viewStyle }),
+                    { key: 'view', ref: (ref) => { this.view = ref; } },
+                    children
+                )
             ),
             cloneElement(
                 renderTrackHorizontal({ style: trackHorizontalStyle }),
@@ -602,6 +607,7 @@ Scrollbars.propTypes = {
     onScrollStop: PropTypes.func,
     onUpdate: PropTypes.func,
     renderView: PropTypes.func,
+    renderViewContainer: PropTypes.func.isRequired,
     renderTrackHorizontal: PropTypes.func,
     renderTrackVertical: PropTypes.func,
     renderThumbHorizontal: PropTypes.func,
